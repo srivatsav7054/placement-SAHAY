@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Code2, X } from "lucide-react";
+import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import SectionCard from "./SectionCard";
@@ -10,10 +11,17 @@ const SkillsTab = () => {
 
   const addSkill = () => {
     const trimmed = input.trim();
-    if (trimmed && !skills.includes(trimmed)) {
-      setSkills((p) => [...p, trimmed]);
-      setInput("");
+    if (!trimmed) {
+      toast.error("Please enter a valid skill");
+      return;
     }
+    if (skills.includes(trimmed)) {
+      toast.error(`${trimmed} is already in your skills`);
+      return;
+    }
+    setSkills((p) => [...p, trimmed]);
+    setInput("");
+    toast.success("Skill added successfully");
   };
 
   const removeSkill = (skill: string) => setSkills((p) => p.filter((s) => s !== skill));

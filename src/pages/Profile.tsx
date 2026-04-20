@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { User, GraduationCap, Code2, Building2, FolderGit2, Award } from "lucide-react";
+import { User, GraduationCap, Code2, Building2, FolderGit2, Award, Trophy } from "lucide-react";
 import DashboardSidebar from "@/components/dashboard/DashboardSidebar";
 import { MobileSidebarProvider } from "@/components/dashboard/DashboardSidebar";
 import DashboardTopbar from "@/components/dashboard/DashboardTopbar";
@@ -10,6 +10,7 @@ import SkillsTab from "@/components/profile/SkillsTab";
 import ExperienceTab from "@/components/profile/ExperienceTab";
 import ProjectsTab from "@/components/profile/ProjectsTab";
 import CertificationsTab from "@/components/profile/CertificationsTab";
+import AchievementsTab from "@/components/profile/AchievementsTab";
 import { cn } from "@/lib/utils";
 
 const tabs = [
@@ -19,6 +20,7 @@ const tabs = [
   { id: "experience", label: "Experience", icon: Building2 },
   { id: "projects", label: "Projects", icon: FolderGit2 },
   { id: "certifications", label: "Certifications", icon: Award },
+  { id: "achievements", label: "Achievements", icon: Trophy },
 ];
 
 const Profile = () => {
@@ -38,6 +40,7 @@ const Profile = () => {
       case "experience": return <ExperienceTab />;
       case "projects": return <ProjectsTab />;
       case "certifications": return <CertificationsTab />;
+      case "achievements": return <AchievementsTab />;
       default: return null;
     }
   };

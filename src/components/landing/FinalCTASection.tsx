@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const FinalCTASection = () => {
   return (
@@ -18,13 +19,15 @@ const FinalCTASection = () => {
           <p className="mt-4 text-lg opacity-90">
             Join thousands of students already building their future with Placement-Sahay.
           </p>
-          <Button
-            size="lg"
-            variant="secondary"
-            className="mt-8 gap-2 font-semibold"
-          >
-            Get Started Now <ArrowRight size={18} />
-          </Button>
+          <Link to="/signup">
+            <Button
+              size="lg"
+              variant="secondary"
+              className="mt-8 gap-2 font-semibold"
+            >
+              Get Started Now <ArrowRight size={18} />
+            </Button>
+          </Link>
         </motion.div>
       </div>
     </section>

@@ -6,6 +6,9 @@ import StatsGrid from "@/components/dashboard/StatsGrid";
 import QuickActions from "@/components/dashboard/QuickActions";
 import RecentActivity from "@/components/dashboard/RecentActivity";
 import AIInsights from "@/components/dashboard/AIInsights";
+import ProfileCompletionCard from "@/components/dashboard/ProfileCompletionCard";
+import DashboardTodo from "@/components/dashboard/DashboardTodo";
+import TrendingNews from "@/components/dashboard/TrendingNews";
 
 const Dashboard = () => (
   <MobileSidebarProvider>
@@ -17,13 +20,21 @@ const Dashboard = () => (
           <WelcomeHeader />
           <StatsGrid />
           <QuickActions />
+
+          {/* Row 1: Recent Activity + Profile / AI sidebar */}
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
             <div className="lg:col-span-3">
               <RecentActivity />
             </div>
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-2 space-y-6">
+              <ProfileCompletionCard />
               <AIInsights />
             </div>
+          </div>
+
+          {/* Row 2: Trending News (full width or adjusted) */}
+          <div className="grid grid-cols-1 gap-6">
+            <TrendingNews />
           </div>
         </main>
       </div>

@@ -35,10 +35,10 @@ const Navbar = () => {
               {link.label}
             </a>
           ))}
-          <Link to="/dashboard">
+          <Link to="/login">
             <Button variant="ghost" size="sm">Login</Button>
           </Link>
-          <Link to="/dashboard">
+          <Link to="/signup">
             <Button size="sm">Get Started</Button>
           </Link>
         </div>
@@ -70,10 +70,10 @@ const Navbar = () => {
                 {link.label}
               </a>
             ))}
-            <Link to="/dashboard" onClick={() => setMobileOpen(false)}>
+            <Link to="/login" onClick={() => setMobileOpen(false)}>
               <Button variant="ghost" size="sm" className="w-fit">Login</Button>
             </Link>
-            <Link to="/dashboard" onClick={() => setMobileOpen(false)}>
+            <Link to="/signup" onClick={() => setMobileOpen(false)}>
               <Button size="sm" className="w-fit">Get Started</Button>
             </Link>
           </div>

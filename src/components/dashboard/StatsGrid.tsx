@@ -47,7 +47,7 @@ const StatsGrid = () => (
 
     <motion.div {...anim(2)}>
       <Card className="flex h-full flex-col justify-between p-5 shadow-card">
-        <p className="text-sm font-medium text-muted-foreground">Resumes Built</p>
+        <p className="text-sm font-medium text-muted-foreground">Total Resume Count</p>
         <div className="mt-2 flex items-end justify-between">
           <p className="font-heading text-3xl font-bold text-foreground">12</p>
           <div className="rounded-full bg-secondary p-2.5">

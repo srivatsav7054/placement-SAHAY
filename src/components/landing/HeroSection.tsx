@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   return (
@@ -36,9 +37,11 @@ const HeroSection = () => {
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Button size="lg" className="gap-2">
-                Get Started <ArrowRight size={18} />
-              </Button>
+              <Link to="/signup">
+                <Button size="lg" className="gap-2">
+                  Get Started <ArrowRight size={18} />
+                </Button>
+              </Link>
               <Button variant="outline" size="lg" className="gap-2">
                 <Play size={16} /> View Demo
               </Button>

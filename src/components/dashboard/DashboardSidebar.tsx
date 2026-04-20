@@ -10,6 +10,7 @@ import {
   Settings,
   BarChart3,
   X,
+  FileStack,
 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
@@ -17,6 +18,7 @@ import { cn } from "@/lib/utils";
 const navItems = [
   { label: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
   { label: "Profile", icon: User, path: "/profile" },
+  { label: "Resumes", icon: FileStack, path: "/resumes" },
   { label: "Resume Builder", icon: FileText, path: "/resume-builder" },
   { label: "Analysis", icon: BarChart3, path: "/analysis" },
   { label: "Community", icon: Users, path: "/community" },

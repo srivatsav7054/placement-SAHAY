@@ -1,4 +1,4 @@
-import { Bell, User, Menu } from "lucide-react";
+import { Bell, User, Menu, Newspaper, ListTodo } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useMobileSidebar } from "./DashboardSidebar";
@@ -12,6 +12,7 @@ const pageTitles: Record<string, string> = {
   "/resume-builder": "Resume Builder",
   "/analysis": "Analysis",
   "/community": "Community",
+  "/todo": "My Tasks",
   "/settings": "Settings",
 };
 
@@ -34,6 +35,18 @@ const DashboardTopbar = () => {
         <h2 className="font-heading text-lg font-semibold text-foreground">{title}</h2>
       </div>
       <div className="flex items-center gap-2">
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          title="My Tasks"
+          onClick={() => navigate("/todo")}
+          className={location.pathname === "/todo" ? "text-primary bg-primary/10" : ""}
+        >
+          <ListTodo className="h-5 w-5" />
+        </Button>
+        <Button variant="ghost" size="icon" title="Trending News">
+          <Newspaper className="h-5 w-5 text-muted-foreground" />
+        </Button>
         <Button variant="ghost" size="icon" className="relative">
           <Bell className="h-5 w-5 text-muted-foreground" />
           <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-destructive" />
