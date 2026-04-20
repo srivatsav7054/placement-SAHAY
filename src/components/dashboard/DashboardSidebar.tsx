@@ -6,6 +6,8 @@ import {
   User,
   FileText,
   Users,
+  CloudSun,
+  CheckSquare,
   ChevronLeft,
   Settings,
   BarChart3,
@@ -22,14 +24,15 @@ const navItems = [
   { label: "Resume Builder", icon: FileText, path: "/resume-builder" },
   { label: "Analysis", icon: BarChart3, path: "/analysis" },
   { label: "Community", icon: Users, path: "/community" },
+  { label: "Weather", icon: CloudSun, path: "/weather" },
+  { label: "To-do", icon: CheckSquare, path: "/todo" },
   { label: "Settings", icon: Settings, path: "/settings" },
 ];
 
-// Context for mobile sidebar toggle
 export const MobileSidebarContext = createContext<{
   open: boolean;
-  setOpen: (v: boolean) => void;
-}>({ open: false, setOpen: () => {} });
+  setOpen: (value: boolean) => void;
+}>({ open: false, setOpen: () => undefined });
 
 export const useMobileSidebar = () => useContext(MobileSidebarContext);
 
@@ -46,7 +49,7 @@ const SidebarNav = ({ collapsed, onNavigate }: { collapsed: boolean; onNavigate?
   const location = useLocation();
 
   return (
-    <nav className="flex-1 space-y-1 px-3 py-4">
+    <nav className="flex-1 space-y-1 px-3 py-3">
       {navItems.map((item) => {
         const isActive = location.pathname === item.path;
         const linkContent = (
@@ -54,7 +57,7 @@ const SidebarNav = ({ collapsed, onNavigate }: { collapsed: boolean; onNavigate?
             to={item.path}
             onClick={onNavigate}
             className={cn(
-              "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+              "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
               isActive
                 ? "bg-primary text-primary-foreground"
                 : "text-muted-foreground hover:bg-secondary hover:text-foreground"
@@ -86,13 +89,12 @@ const DashboardSidebar = () => {
 
   return (
     <>
-      {/* Desktop sidebar */}
       <motion.aside
-        animate={{ width: collapsed ? 72 : 220 }}
+        animate={{ width: collapsed ? 72 : 208 }}
         transition={{ duration: 0.25, ease: "easeInOut" }}
         className="hidden md:flex sticky top-0 h-screen flex-col border-r border-border bg-card"
       >
-        <div className="flex items-center justify-between border-b border-border px-4 py-4">
+        <div className="flex items-center justify-between border-b border-border px-4 py-3.5">
           <AnimatePresence>
             {!collapsed && (
               <motion.span
@@ -115,7 +117,6 @@ const DashboardSidebar = () => {
         <SidebarNav collapsed={collapsed} />
       </motion.aside>
 
-      {/* Mobile overlay */}
       <AnimatePresence>
         {open && (
           <>
@@ -135,7 +136,10 @@ const DashboardSidebar = () => {
             >
               <div className="flex items-center justify-between border-b border-border px-4 py-4">
                 <span className="font-heading text-base font-bold text-foreground">Placement-Sahay</span>
-                <button onClick={() => setOpen(false)} className="rounded-md p-1.5 text-muted-foreground hover:bg-secondary transition-colors">
+                <button
+                  onClick={() => setOpen(false)}
+                  className="rounded-md p-1.5 text-muted-foreground hover:bg-secondary transition-colors"
+                >
                   <X className="h-4 w-4" />
                 </button>
               </div>

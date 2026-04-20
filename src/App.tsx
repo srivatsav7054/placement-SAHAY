@@ -14,7 +14,12 @@ import Login from "./pages/Login.tsx";
 import Signup from "./pages/Signup.tsx";
 import Resumes from "./pages/Resumes.tsx";
 import Community from "./pages/Community.tsx";
+<<<<<<< HEAD
 import TodoPage from "./pages/TodoPage.tsx";
+=======
+import Weather from "./pages/Weather.tsx";
+import Todo from "./pages/Todo.tsx";
+>>>>>>> a8ce0f73241742663a3408809d1249ce577c31d8
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -26,22 +31,24 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          {/* Public routes */}
           <Route path="/" element={<Index />} />
           <Route path="/login/*" element={<Login />} />
           <Route path="/signup/*" element={<Signup />} />
 
-          {/* Protected routes */}
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
           <Route path="/resumes" element={<ProtectedRoute><Resumes /></ProtectedRoute>} />
           <Route path="/resume-builder" element={<ProtectedRoute><ResumeBuilder /></ProtectedRoute>} />
           <Route path="/analysis" element={<ProtectedRoute><Analysis /></ProtectedRoute>} />
           <Route path="/community" element={<ProtectedRoute><Community /></ProtectedRoute>} />
+<<<<<<< HEAD
           <Route path="/todo" element={<ProtectedRoute><TodoPage /></ProtectedRoute>} />
+=======
+          <Route path="/weather" element={<ProtectedRoute><Weather /></ProtectedRoute>} />
+          <Route path="/todo" element={<ProtectedRoute><Todo /></ProtectedRoute>} />
+>>>>>>> a8ce0f73241742663a3408809d1249ce577c31d8
           <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
 
-          {/* Catch-all */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

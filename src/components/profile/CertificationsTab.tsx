@@ -10,12 +10,20 @@ import { api, Certification } from "@/lib/api";
 import SectionCard from "./SectionCard";
 import EmptyState from "./EmptyState";
 import ProfileModal from "./ProfileModal";
+import { ConfirmDeleteDialog } from "@/components/ui/confirm-delete-dialog";
 
 const DEMO_USER_ID = "demo-user-123";
 
 const CertificationsTab = () => {
+<<<<<<< HEAD
   const { user: clerkUser } = useUser();
   const userId = clerkUser?.id || DEMO_USER_ID;
+=======
+  const [items, setItems] = useState<Certification[]>([]);
+  const [open, setOpen] = useState(false);
+  const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; item: Certification | null }>({ open: false, item: null });
+  const [form, setForm] = useState({ name: "", issuer: "", date: "", credentialLink: "" });
+>>>>>>> a8ce0f73241742663a3408809d1249ce577c31d8
 
   const [items, setItems] = useState<Certification[]>([]);
   const [loading, setLoading] = useState(true);
@@ -57,6 +65,7 @@ const CertificationsTab = () => {
     }
   };
 
+<<<<<<< HEAD
   const handleDelete = async (certId?: string) => {
     if (!certId) return;
     try {
@@ -65,6 +74,16 @@ const CertificationsTab = () => {
       toast.success("Entry removed");
     } catch (error) {
       toast.error("Failed to delete entry");
+=======
+  const handleDelete = (id: number) => {
+    const item = items.find(i => i.id === id);
+    setDeleteDialog({ open: true, item });
+  };
+
+  const confirmDelete = () => {
+    if (deleteDialog.item) {
+      setItems((p) => p.filter((i) => i.id !== deleteDialog.item!.id));
+>>>>>>> a8ce0f73241742663a3408809d1249ce577c31d8
     }
   };
 
@@ -132,6 +151,15 @@ const CertificationsTab = () => {
           </div>
         </div>
       </ProfileModal>
+
+      <ConfirmDeleteDialog
+        isOpen={deleteDialog.open}
+        onClose={() => setDeleteDialog({ open: false, item: null })}
+        onConfirm={confirmDelete}
+        title="Delete Certification"
+        description="This will permanently remove this certification from your profile."
+        itemName={deleteDialog.item?.name}
+      />
     </>
   );
 };

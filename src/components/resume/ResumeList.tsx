@@ -5,10 +5,10 @@ import { ResumeData } from "./resumeTypes";
 
 interface ResumeListProps {
   resumes: ResumeData[];
-  activeId: number | null;
-  onSelect: (id: number) => void;
+  activeId: string | null;
+  onSelect: (id: string) => void;
   onCreate: () => void;
-  onDelete: (id: number) => void;
+  onDelete: (id: string) => void;
 }
 
 const ResumeList = ({ resumes, activeId, onSelect, onCreate, onDelete }: ResumeListProps) => (
@@ -23,24 +23,27 @@ const ResumeList = ({ resumes, activeId, onSelect, onCreate, onDelete }: ResumeL
       {resumes.length === 0 && (
         <p className="text-xs text-muted-foreground text-center py-8">No resumes yet. Create one!</p>
       )}
-      {resumes.map((r) => (
+      {resumes.map((resume) => (
         <div
-          key={r.id}
-          onClick={() => onSelect(r.id)}
+          key={resume.id}
+          onClick={() => onSelect(resume.id)}
           className={cn(
             "flex items-center justify-between rounded-lg px-3 py-2.5 cursor-pointer transition-colors group",
-            activeId === r.id ? "bg-primary/10 text-primary" : "hover:bg-secondary text-foreground"
+            activeId === resume.id ? "bg-primary/10 text-primary" : "hover:bg-secondary text-foreground"
           )}
         >
           <div className="flex items-center gap-2 min-w-0">
             <FileText className="h-4 w-4 shrink-0" />
             <div className="min-w-0">
-              <p className="text-sm font-medium truncate">{r.name}</p>
-              <p className="text-[10px] text-muted-foreground">{r.updatedAt}</p>
+              <p className="text-sm font-medium truncate">{resume.name}</p>
+              <p className="text-[10px] text-muted-foreground">{resume.updatedAt}</p>
             </div>
           </div>
           <button
-            onClick={(e) => { e.stopPropagation(); onDelete(r.id); }}
+            onClick={(event) => {
+              event.stopPropagation();
+              onDelete(resume.id);
+            }}
             className="opacity-0 group-hover:opacity-100 p-1 rounded hover:bg-destructive/10 text-destructive transition-all"
           >
             <Trash2 className="h-3.5 w-3.5" />

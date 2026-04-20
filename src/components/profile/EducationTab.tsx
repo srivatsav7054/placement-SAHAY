@@ -10,12 +10,20 @@ import { api, Education } from "@/lib/api";
 import SectionCard from "./SectionCard";
 import EmptyState from "./EmptyState";
 import ProfileModal from "./ProfileModal";
+import { ConfirmDeleteDialog } from "@/components/ui/confirm-delete-dialog";
 
 const DEMO_USER_ID = "demo-user-123";
 
 const EducationTab = () => {
+<<<<<<< HEAD
   const { user } = useUser();
   const userId = user?.id || DEMO_USER_ID;
+=======
+  const [items, setItems] = useState<Education[]>([]);
+  const [open, setOpen] = useState(false);
+  const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; item: Education | null }>({ open: false, item: null });
+  const [form, setForm] = useState({ institution: "", degree: "", field: "", dates: "" });
+>>>>>>> a8ce0f73241742663a3408809d1249ce577c31d8
 
   const [items, setItems] = useState<Education[]>([]);
   const [loading, setLoading] = useState(true);
@@ -57,6 +65,7 @@ const EducationTab = () => {
     }
   };
 
+<<<<<<< HEAD
   const handleDelete = async (eduId?: string) => {
     if (!eduId) return;
     try {
@@ -65,6 +74,16 @@ const EducationTab = () => {
       toast.success("Entry removed");
     } catch (error) {
       toast.error("Failed to delete entry");
+=======
+  const handleDelete = (id: number) => {
+    const item = items.find(i => i.id === id);
+    setDeleteDialog({ open: true, item });
+  };
+
+  const confirmDelete = () => {
+    if (deleteDialog.item) {
+      setItems((p) => p.filter((i) => i.id !== deleteDialog.item!.id));
+>>>>>>> a8ce0f73241742663a3408809d1249ce577c31d8
     }
   };
 
@@ -134,6 +153,15 @@ const EducationTab = () => {
           </div>
         </div>
       </ProfileModal>
+
+      <ConfirmDeleteDialog
+        isOpen={deleteDialog.open}
+        onClose={() => setDeleteDialog({ open: false, item: null })}
+        onConfirm={confirmDelete}
+        title="Delete Education"
+        description="This will permanently remove this education entry from your profile."
+        itemName={deleteDialog.item?.institution}
+      />
     </>
   );
 };

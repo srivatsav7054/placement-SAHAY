@@ -1,14 +1,18 @@
-import { ArrowUp, ArrowDown } from "lucide-react";
+import { ArrowUp, ArrowDown, Save, Download, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { ResumeData, ResumeSection } from "./resumeTypes";
+import { useState } from "react";
 
 interface BuilderControlsProps {
   resume: ResumeData;
   onUpdate: (data: Partial<ResumeData>) => void;
+  onSave?: () => Promise<void>;
+  onDownload?: () => Promise<void>;
+  isSaving?: boolean;
 }
 
 const templates: { id: ResumeData["template"]; label: string; desc: string }[] = [
@@ -17,7 +21,9 @@ const templates: { id: ResumeData["template"]; label: string; desc: string }[] =
   { id: "compact", label: "Compact", desc: "Dense layout" },
 ];
 
-const BuilderControls = ({ resume, onUpdate }: BuilderControlsProps) => {
+const BuilderControls = ({ resume, onUpdate, onSave, onDownload, isSaving = false }: BuilderControlsProps) => {
+  const [isDownloading, setIsDownloading] = useState(false);
+
   const toggleSection = (id: string) => {
     onUpdate({
       sections: resume.sections.map((s) =>
@@ -34,8 +40,45 @@ const BuilderControls = ({ resume, onUpdate }: BuilderControlsProps) => {
     onUpdate({ sections: newSections });
   };
 
+  const handleDownload = async () => {
+    if (!onDownload) return;
+    try {
+      setIsDownloading(true);
+      await onDownload();
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   return (
     <div className="flex-1 overflow-y-auto p-5 space-y-6 border-r border-border bg-background">
+      {/* Action Buttons */}
+      <div className="space-y-2">
+        {onSave && (
+          <Button
+            onClick={onSave}
+            disabled={isSaving}
+            className="w-full gap-2"
+            size="sm"
+          >
+            {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+            {isSaving ? "Saving..." : "Save Resume"}
+          </Button>
+        )}
+        {onDownload && (
+          <Button
+            onClick={handleDownload}
+            disabled={isDownloading}
+            variant="outline"
+            className="w-full gap-2"
+            size="sm"
+          >
+            {isDownloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+            {isDownloading ? "Downloading..." : "Download PDF"}
+          </Button>
+        )}
+      </div>
+
       {/* Template */}
       <div>
         <h4 className="font-heading text-sm font-semibold text-foreground mb-3">Template</h4>
