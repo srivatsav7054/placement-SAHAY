@@ -61,16 +61,30 @@ const ClerkSignInWidget = () => {
         signUpUrl="/signup"
         afterSignInUrl="/dashboard"
         appearance={{
+          baseTheme: undefined,
           elements: {
             rootBox: "w-full",
-            card: "bg-transparent shadow-none border-none",
-            headerTitle: "text-[#2e3336] font-['Plus_Jakarta_Sans']",
-            headerSubtitle: "text-[#5b6063] font-['Manrope']",
-            socialButtonsBlockButton:
-              "border-[#eceef1] hover:bg-white/50 transition-all duration-300",
-            formButtonPrimary:
-              "bg-[#4d5aa1] hover:bg-[#414e94] text-white rounded-xl transition-all duration-300",
-            footerActionLink: "text-[#4d5aa1] hover:text-[#414e94]",
+            card: "bg-white/95 backdrop-blur-sm shadow-lg border border-border rounded-2xl",
+            headerTitle: "text-foreground font-bold text-2xl font-['Space_Grotesk']",
+            headerSubtitle: "text-muted-foreground font-['Inter']",
+            socialButtonsBlockButton: "border-border hover:bg-accent/50 transition-all duration-300 rounded-lg",
+            formButtonPrimary: "bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl transition-all duration-300 font-medium shadow-sm hover:shadow-md",
+            formButtonReset: "bg-secondary hover:bg-secondary/80 text-secondary-foreground rounded-xl transition-all duration-300",
+            footerActionLink: "text-primary hover:text-primary/80 font-medium",
+            formFieldInput: "border-border rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary",
+            formFieldLabel: "text-foreground font-medium font-['Inter']",
+            dividerLine: "bg-border",
+            dividerText: "text-muted-foreground font-['Inter']",
+            alert: "border-border bg-card text-card-foreground",
+            alertText: "text-sm font-['Inter']",
+          },
+          variables: {
+            colorPrimary: "hsl(172, 66%, 40%)",
+            colorBackground: "hsl(210, 20%, 98%)",
+            colorInputBackground: "hsl(0, 0%, 100%)",
+            colorInputText: "hsl(220, 25%, 10%)",
+            colorText: "hsl(220, 25%, 10%)",
+            borderRadius: "0.75rem",
           },
         }}
       />

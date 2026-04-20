@@ -46,7 +46,7 @@ const item = {
 
 const FeaturesSection = () => {
   return (
-    <section id="features" className="py-20 md:py-28">
+    <section id="features" className="scroll-mt-24 py-10 md:py-14">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -57,7 +57,7 @@ const FeaturesSection = () => {
           <h2 className="font-heading text-3xl font-bold text-foreground md:text-4xl">
             Everything You Need to Get Placed
           </h2>
-          <p className="mt-4 text-lg text-muted-foreground">
+          <p className="mt-3 text-base text-muted-foreground md:text-lg">
             Powerful tools designed to give you an unfair advantage in your job search.
           </p>
         </motion.div>
@@ -67,7 +67,7 @@ const FeaturesSection = () => {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true }}
-          className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
         >
           {features.map((f) => (
             <motion.div

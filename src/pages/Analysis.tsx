@@ -12,12 +12,7 @@ const Analysis = () => (
       <DashboardSidebar />
       <div className="flex flex-1 flex-col overflow-hidden">
         <DashboardTopbar />
-        <main className="flex-1 overflow-y-auto px-4 md:px-6 py-6 space-y-6">
-          <div>
-            <h1 className="text-2xl font-heading font-bold text-foreground">Analysis</h1>
-            <p className="text-sm text-muted-foreground mt-1">Paste → Click → Insight → Improve</p>
-          </div>
-
+        <main className="flex-1 overflow-y-auto px-4 md:px-6 py-3 md:py-4 space-y-5">
           <Tabs defaultValue="job-match" className="w-full">
             <TabsList className="w-full sm:w-auto">
               <TabsTrigger value="job-match" className="gap-1.5">

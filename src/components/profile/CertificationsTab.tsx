@@ -7,6 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import SectionCard from "./SectionCard";
 import EmptyState from "./EmptyState";
 import ProfileModal from "./ProfileModal";
+import { ConfirmDeleteDialog } from "@/components/ui/confirm-delete-dialog";
 
 interface Certification {
   id: number;
@@ -19,6 +20,7 @@ interface Certification {
 const CertificationsTab = () => {
   const [items, setItems] = useState<Certification[]>([]);
   const [open, setOpen] = useState(false);
+  const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; item: Certification | null }>({ open: false, item: null });
   const [form, setForm] = useState({ name: "", issuer: "", date: "", credentialLink: "" });
 
   const handleSave = () => {
@@ -28,7 +30,16 @@ const CertificationsTab = () => {
     setOpen(false);
   };
 
-  const handleDelete = (id: number) => setItems((p) => p.filter((i) => i.id !== id));
+  const handleDelete = (id: number) => {
+    const item = items.find(i => i.id === id);
+    setDeleteDialog({ open: true, item });
+  };
+
+  const confirmDelete = () => {
+    if (deleteDialog.item) {
+      setItems((p) => p.filter((i) => i.id !== deleteDialog.item!.id));
+    }
+  };
 
   return (
     <>
@@ -88,6 +99,15 @@ const CertificationsTab = () => {
           <Input value={form.credentialLink} onChange={(e) => setForm((p) => ({ ...p, credentialLink: e.target.value }))} placeholder="https://..." />
         </div>
       </ProfileModal>
+
+      <ConfirmDeleteDialog
+        isOpen={deleteDialog.open}
+        onClose={() => setDeleteDialog({ open: false, item: null })}
+        onConfirm={confirmDelete}
+        title="Delete Certification"
+        description="This will permanently remove this certification from your profile."
+        itemName={deleteDialog.item?.name}
+      />
     </>
   );
 };

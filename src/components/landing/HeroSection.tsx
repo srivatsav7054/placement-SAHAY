@@ -2,73 +2,81 @@ import { motion } from "framer-motion";
 import { ArrowRight, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const HeroSection = () => {
+interface HeroSectionProps {
+  onOpenSignup?: () => void;
+}
+
+const HeroSection = ({ onOpenSignup }: HeroSectionProps) => {
   return (
-    <section className="relative overflow-hidden pt-32 pb-20 md:pt-40 md:pb-28">
-      {/* Background decoration */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 h-[500px] w-[500px] rounded-full bg-primary/10 blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 h-[400px] w-[400px] rounded-full bg-primary/5 blur-3xl" />
-      </div>
+    <section className="relative overflow-hidden h-screen min-h-[600px] w-full flex items-center bg-slate-900 border-none m-0 p-0">
+      {/* Fallback background */}
+      <div className="absolute inset-0 bg-slate-900" />
+      
+      {/* Background Video */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 h-full w-full object-cover"
+        poster="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1920&q=80"
+      >
+        <source src="https://assets.mixkit.co/videos/preview/mixkit-software-developer-working-on-code-227-large.mp4" type="video/mp4" />
+      </video>
 
-      <div className="container relative mx-auto px-6">
-        <div className="grid items-center gap-12 lg:grid-cols-2">
-          {/* Left content */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="max-w-xl"
-          >
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-sm text-muted-foreground shadow-card">
-              <span className="h-2 w-2 rounded-full bg-primary" />
-              AI-Powered Career Platform
-            </div>
+      {/* Deep Gradient Overlay to ensure text readability */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/20" />
 
-            <h1 className="font-heading text-4xl font-bold leading-tight tracking-tight text-foreground md:text-5xl lg:text-6xl">
-              Build Job-Ready Resumes with{" "}
-              <span className="text-primary">AI</span>
-            </h1>
+      {/* Foreground Content */}
+      <div className="container relative z-10 mx-auto px-6 h-full flex flex-col justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="max-w-2xl"
+        >
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm px-4 py-1.5 text-sm text-slate-200 shadow-xl">
+            <span className="h-2 w-2 rounded-full bg-primary" />
+            AI-Powered Career Platform
+          </div>
 
-            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              Analyze, improve, and get hired faster. Your all-in-one placement
-              companion — from resume building to landing your dream job.
-            </p>
+          <h1 className="font-heading text-4xl font-bold leading-tight tracking-tight text-white md:text-5xl lg:text-7xl">
+            Build Job-Ready Resumes with{" "}
+            <span className="text-primary">AI</span>
+          </h1>
 
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Button size="lg" className="gap-2">
-                Get Started <ArrowRight size={18} />
-              </Button>
-              <Button variant="outline" size="lg" className="gap-2">
-                <Play size={16} /> View Demo
-              </Button>
-            </div>
+          <p className="mt-6 text-lg leading-relaxed text-slate-300 max-w-xl">
+            Analyze, improve, and get hired faster. Your all-in-one placement
+            companion — from resume building to landing your dream job.
+          </p>
 
-            <div className="mt-10 flex items-center gap-6 text-sm text-muted-foreground">
-              <span>✓ Free to start</span>
-              <span>✓ No credit card</span>
-              <span>✓ AI-powered</span>
-            </div>
-          </motion.div>
+          <div className="mt-8 flex flex-wrap items-center gap-4">
+            <Button 
+              size="lg" 
+              className="gap-2 text-base font-semibold"
+              onClick={(e) => { e.preventDefault(); onOpenSignup?.(); }}
+            >
+              Get Started <ArrowRight size={18} />
+            </Button>
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="gap-2 bg-transparent text-white border-white/30 hover:bg-white/10 hover:text-white backdrop-blur-sm"
+              onClick={(e) => {
+                 e.preventDefault();
+                 document.getElementById('preview')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
+              <Play size={16} /> View Demo
+            </Button>
+          </div>
 
-          {/* Right — product preview placeholder */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="relative"
-          >
-            <div className="aspect-[4/3] rounded-2xl border border-border bg-card shadow-card-hover flex items-center justify-center">
-              <div className="text-center text-muted-foreground">
-                <div className="mx-auto mb-4 h-16 w-16 rounded-xl bg-muted flex items-center justify-center text-2xl">
-                  🖥
-                </div>
-                <p className="text-sm font-medium">Product Preview</p>
-                <p className="text-xs mt-1">Add your screenshot here</p>
-              </div>
-            </div>
-          </motion.div>
-        </div>
+          <div className="mt-10 flex items-center gap-6 text-sm text-slate-400 font-medium">
+            <span>✓ Free to start</span>
+            <span>✓ No credit card</span>
+            <span>✓ AI-powered accuracy</span>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

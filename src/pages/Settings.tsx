@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTheme } from "next-themes";
 import DashboardSidebar, { MobileSidebarProvider } from "@/components/dashboard/DashboardSidebar";
 import DashboardTopbar from "@/components/dashboard/DashboardTopbar";
 import { cn } from "@/lib/utils";
@@ -19,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
+import { ConfirmDeleteDialog } from "@/components/ui/confirm-delete-dialog";
 
 const sections = [
   { id: "account", label: "Account", icon: User },
@@ -80,16 +82,16 @@ const SecuritySection = () => (
     <CardContent className="space-y-5">
       <div className="space-y-2">
         <Label htmlFor="currentPassword">Current Password</Label>
-        <Input id="currentPassword" type="password" placeholder="••••••••" />
+        <Input id="currentPassword" type="password" placeholder="........" />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="newPassword">New Password</Label>
-          <Input id="newPassword" type="password" placeholder="••••••••" />
+          <Input id="newPassword" type="password" placeholder="........" />
         </div>
         <div className="space-y-2">
           <Label htmlFor="confirmPassword">Confirm Password</Label>
-          <Input id="confirmPassword" type="password" placeholder="••••••••" />
+          <Input id="confirmPassword" type="password" placeholder="........" />
         </div>
       </div>
       <Separator />
@@ -141,7 +143,8 @@ const NotificationsSection = () => (
 );
 
 const AppearanceSection = () => {
-  const [dark, setDark] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const dark = theme === "dark";
 
   return (
     <Card className="shadow-sm">
@@ -155,17 +158,17 @@ const AppearanceSection = () => {
             {dark ? <Moon className="h-5 w-5 text-muted-foreground" /> : <Sun className="h-5 w-5 text-muted-foreground" />}
             <div>
               <p className="text-sm font-medium text-foreground">Dark Mode</p>
-              <p className="text-xs text-muted-foreground">Toggle dark theme</p>
+              <p className="text-xs text-muted-foreground">Toggle the global application theme</p>
             </div>
           </div>
-          <Switch checked={dark} onCheckedChange={setDark} />
+          <Switch checked={dark} onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")} />
         </div>
       </CardContent>
     </Card>
   );
 };
 
-const PrivacySection = () => (
+const PrivacySection = ({ onDeleteRequest }: { onDeleteRequest: () => void }) => (
   <div className="space-y-6">
     <Card className="shadow-sm">
       <CardHeader>
@@ -188,7 +191,7 @@ const PrivacySection = () => (
         <CardTitle className="text-lg text-destructive flex items-center gap-2">
           <Trash2 className="h-5 w-5" /> Danger Zone
         </CardTitle>
-        <CardDescription>Irreversible actions — proceed with caution</CardDescription>
+        <CardDescription>Irreversible actions require a final confirmation.</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -196,7 +199,9 @@ const PrivacySection = () => (
             <p className="text-sm font-medium text-foreground">Delete Account</p>
             <p className="text-xs text-muted-foreground">Permanently delete your account and all data</p>
           </div>
-          <Button variant="destructive" size="sm">Delete Account</Button>
+          <Button variant="destructive" size="sm" onClick={onDeleteRequest}>
+            Delete Account
+          </Button>
         </div>
       </CardContent>
     </Card>
@@ -205,15 +210,22 @@ const PrivacySection = () => (
 
 const Settings = () => {
   const [active, setActive] = useState("account");
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const renderContent = () => {
     switch (active) {
-      case "account": return <AccountSection />;
-      case "security": return <SecuritySection />;
-      case "notifications": return <NotificationsSection />;
-      case "appearance": return <AppearanceSection />;
-      case "privacy": return <PrivacySection />;
-      default: return null;
+      case "account":
+        return <AccountSection />;
+      case "security":
+        return <SecuritySection />;
+      case "notifications":
+        return <NotificationsSection />;
+      case "appearance":
+        return <AppearanceSection />;
+      case "privacy":
+        return <PrivacySection onDeleteRequest={() => setDeleteDialogOpen(true)} />;
+      default:
+        return null;
     }
   };
 
@@ -223,38 +235,40 @@ const Settings = () => {
         <DashboardSidebar />
         <div className="flex flex-1 flex-col overflow-hidden">
           <DashboardTopbar />
-          <main className="flex-1 overflow-y-auto px-4 md:px-6 py-6">
-            <div className="mb-6">
-              <h1 className="text-2xl font-heading font-bold text-foreground">Settings</h1>
-              <p className="text-sm text-muted-foreground mt-1">Manage your account preferences</p>
-            </div>
-
-            <div className="flex flex-col md:flex-row gap-6">
-              {/* Settings sidebar */}
+          <main className="flex-1 overflow-y-auto px-4 md:px-6 py-3 md:py-4">
+            <div className="flex flex-col md:flex-row gap-6 mt-1">
               <nav className="flex md:flex-col gap-1 overflow-x-auto md:overflow-visible md:w-52 shrink-0">
-                {sections.map((s) => (
+                {sections.map((section) => (
                   <button
-                    key={s.id}
-                    onClick={() => setActive(s.id)}
+                    key={section.id}
+                    onClick={() => setActive(section.id)}
                     className={cn(
                       "flex items-center gap-2.5 rounded-lg px-4 py-2.5 text-sm font-medium whitespace-nowrap transition-colors",
-                      active === s.id
+                      active === section.id
                         ? "bg-primary text-primary-foreground"
                         : "text-muted-foreground hover:bg-secondary hover:text-foreground"
                     )}
                   >
-                    <s.icon className="h-4 w-4 shrink-0" />
-                    {s.label}
+                    <section.icon className="h-4 w-4 shrink-0" />
+                    {section.label}
                   </button>
                 ))}
               </nav>
 
-              {/* Content */}
               <div className="flex-1 max-w-2xl">{renderContent()}</div>
             </div>
           </main>
         </div>
       </div>
+
+      <ConfirmDeleteDialog
+        isOpen={deleteDialogOpen}
+        onClose={() => setDeleteDialogOpen(false)}
+        onConfirm={async () => Promise.resolve()}
+        title="Delete Account"
+        description="This is the second confirmation step. Hook this action to the backend delete endpoint when account deletion is enabled."
+        itemName="your account"
+      />
     </MobileSidebarProvider>
   );
 };

@@ -67,6 +67,9 @@
   * {
     @apply border-border;
   }
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     @apply bg-background text-foreground;
     font-family: var(--body-font);
@@ -75,3 +78,17 @@
     font-family: var(--heading-font);
   }
 }
+
+@layer utilities {
+  .scrollbar-hidden {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+body { -ms-overflow-style: none; scrollbar-width: none; }
+body::-webkit-scrollbar { display: none; }

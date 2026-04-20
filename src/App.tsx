@@ -12,6 +12,8 @@ import Analysis from "./pages/Analysis.tsx";
 import Settings from "./pages/Settings.tsx";
 import Login from "./pages/Login.tsx";
 import Community from "./pages/Community.tsx";
+import Weather from "./pages/Weather.tsx";
+import Todo from "./pages/Todo.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -23,19 +25,18 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          {/* Public routes */}
           <Route path="/" element={<Index />} />
           <Route path="/login/*" element={<Login />} />
 
-          {/* Protected routes */}
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
           <Route path="/resume-builder" element={<ProtectedRoute><ResumeBuilder /></ProtectedRoute>} />
           <Route path="/analysis" element={<ProtectedRoute><Analysis /></ProtectedRoute>} />
           <Route path="/community" element={<ProtectedRoute><Community /></ProtectedRoute>} />
+          <Route path="/weather" element={<ProtectedRoute><Weather /></ProtectedRoute>} />
+          <Route path="/todo" element={<ProtectedRoute><Todo /></ProtectedRoute>} />
           <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
 
-          {/* Catch-all */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

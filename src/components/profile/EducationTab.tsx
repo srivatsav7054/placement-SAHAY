@@ -7,6 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import SectionCard from "./SectionCard";
 import EmptyState from "./EmptyState";
 import ProfileModal from "./ProfileModal";
+import { ConfirmDeleteDialog } from "@/components/ui/confirm-delete-dialog";
 
 interface Education {
   id: number;
@@ -19,6 +20,7 @@ interface Education {
 const EducationTab = () => {
   const [items, setItems] = useState<Education[]>([]);
   const [open, setOpen] = useState(false);
+  const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; item: Education | null }>({ open: false, item: null });
   const [form, setForm] = useState({ institution: "", degree: "", field: "", dates: "" });
 
   const handleSave = () => {
@@ -28,7 +30,16 @@ const EducationTab = () => {
     setOpen(false);
   };
 
-  const handleDelete = (id: number) => setItems((p) => p.filter((i) => i.id !== id));
+  const handleDelete = (id: number) => {
+    const item = items.find(i => i.id === id);
+    setDeleteDialog({ open: true, item });
+  };
+
+  const confirmDelete = () => {
+    if (deleteDialog.item) {
+      setItems((p) => p.filter((i) => i.id !== deleteDialog.item!.id));
+    }
+  };
 
   return (
     <>
@@ -84,6 +95,15 @@ const EducationTab = () => {
           <Input value={form.dates} onChange={(e) => setForm((p) => ({ ...p, dates: e.target.value }))} placeholder="2020 - 2024" />
         </div>
       </ProfileModal>
+
+      <ConfirmDeleteDialog
+        isOpen={deleteDialog.open}
+        onClose={() => setDeleteDialog({ open: false, item: null })}
+        onConfirm={confirmDelete}
+        title="Delete Education"
+        description="This will permanently remove this education entry from your profile."
+        itemName={deleteDialog.item?.institution}
+      />
     </>
   );
 };

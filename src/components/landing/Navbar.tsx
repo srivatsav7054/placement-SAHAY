@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import { UserButton, useAuth } from "@clerk/clerk-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
@@ -10,8 +11,111 @@ const navLinks = [
   { label: "Community", href: "#community" },
 ];
 
-const Navbar = () => {
+interface NavbarProps {
+  onOpenLogin?: () => void;
+  onOpenSignup?: () => void;
+}
+
+const CLERK_ENABLED = !!import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+
+const ClerkDesktopAuthActions = ({
+  onOpenLogin,
+  onOpenSignup,
+}: Required<Pick<NavbarProps, "onOpenLogin" | "onOpenSignup">>) => {
+  const { isSignedIn } = useAuth();
+
+  if (isSignedIn) {
+    return (
+      <>
+        <Button asChild variant="ghost" size="sm">
+          <Link to="/dashboard">Dashboard</Link>
+        </Button>
+        <UserButton afterSignOutUrl="/" />
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Button variant="ghost" size="sm" onClick={(e) => { e.preventDefault(); onOpenLogin(); }}>Login</Button>
+      <Button size="sm" onClick={(e) => { e.preventDefault(); onOpenSignup(); }}>Get Started</Button>
+    </>
+  );
+};
+
+const ClerkMobileAuthActions = ({
+  onOpenLogin,
+  onOpenSignup,
+  closeMenu,
+}: Required<Pick<NavbarProps, "onOpenLogin" | "onOpenSignup">> & { closeMenu: () => void }) => {
+  const { isSignedIn } = useAuth();
+
+  if (isSignedIn) {
+    return (
+      <Button asChild size="sm" className="w-fit">
+        <Link to="/dashboard" onClick={closeMenu}>Dashboard</Link>
+      </Button>
+    );
+  }
+
+  return (
+    <>
+      <Button variant="ghost" size="sm" className="w-fit" onClick={() => { closeMenu(); onOpenLogin(); }}>Login</Button>
+      <Button size="sm" className="w-fit" onClick={() => { closeMenu(); onOpenSignup(); }}>Get Started</Button>
+    </>
+  );
+};
+
+const Navbar = ({ onOpenLogin, onOpenSignup }: NavbarProps) => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeHref, setActiveHref] = useState(navLinks[0]?.href ?? "#features");
+
+  const scrollToSection = (href: string) => {
+    const element = document.querySelector(href);
+
+    if (element instanceof HTMLElement) {
+      setActiveHref(href);
+      window.scrollTo({
+        top: element.offsetTop,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  useEffect(() => {
+    const sections = navLinks
+      .map((link) => {
+        const element = document.querySelector(link.href);
+        return element instanceof HTMLElement ? { href: link.href, element } : null;
+      })
+      .filter((item): item is { href: string; element: HTMLElement } => item !== null);
+
+    if (!sections.length) {
+      return;
+    }
+
+    const updateActiveSection = () => {
+      const probeY = window.scrollY + 120;
+      let current = sections[0]?.href ?? "#features";
+
+      for (const section of sections) {
+        if (probeY >= section.element.offsetTop) {
+          current = section.href;
+        }
+      }
+
+      setActiveHref(current);
+    };
+
+    updateActiveSection();
+    window.addEventListener("scroll", updateActiveSection, { passive: true });
+    window.addEventListener("resize", updateActiveSection);
+
+    return () => {
+      window.removeEventListener("scroll", updateActiveSection);
+      window.removeEventListener("resize", updateActiveSection);
+    };
+  }, []);
 
   return (
     <motion.nav
@@ -30,17 +134,27 @@ const Navbar = () => {
             <a
               key={link.label}
               href={link.href}
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className={`rounded-full px-3 py-1.5 text-sm font-medium transition-all ${
+                activeHref === link.href
+                  ? "bg-primary/12 font-semibold text-primary"
+                  : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+              }`}
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection(link.href);
+              }}
             >
               {link.label}
             </a>
           ))}
-          <Link to="/dashboard">
-            <Button variant="ghost" size="sm">Login</Button>
-          </Link>
-          <Link to="/dashboard">
-            <Button size="sm">Get Started</Button>
-          </Link>
+          {CLERK_ENABLED && onOpenLogin && onOpenSignup ? (
+            <ClerkDesktopAuthActions onOpenLogin={onOpenLogin} onOpenSignup={onOpenSignup} />
+          ) : (
+            <>
+              <Button variant="ghost" size="sm" onClick={(e) => { e.preventDefault(); onOpenLogin?.(); }}>Login</Button>
+              <Button size="sm" onClick={(e) => { e.preventDefault(); onOpenSignup?.(); }}>Get Started</Button>
+            </>
+          )}
         </div>
 
         {/* Mobile toggle */}
@@ -64,18 +178,32 @@ const Navbar = () => {
               <a
                 key={link.label}
                 href={link.href}
-                className="text-sm font-medium text-muted-foreground"
-                onClick={() => setMobileOpen(false)}
+                className={`w-fit rounded-full px-3 py-1.5 text-sm font-medium transition-all ${
+                  activeHref === link.href
+                    ? "bg-primary/12 font-semibold text-primary"
+                    : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+                }`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setMobileOpen(false);
+                  scrollToSection(link.href);
+                }}
               >
                 {link.label}
               </a>
             ))}
-            <Link to="/dashboard" onClick={() => setMobileOpen(false)}>
-              <Button variant="ghost" size="sm" className="w-fit">Login</Button>
-            </Link>
-            <Link to="/dashboard" onClick={() => setMobileOpen(false)}>
-              <Button size="sm" className="w-fit">Get Started</Button>
-            </Link>
+            {CLERK_ENABLED && onOpenLogin && onOpenSignup ? (
+              <ClerkMobileAuthActions
+                onOpenLogin={onOpenLogin}
+                onOpenSignup={onOpenSignup}
+                closeMenu={() => setMobileOpen(false)}
+              />
+            ) : (
+              <>
+                <Button variant="ghost" size="sm" className="w-fit" onClick={() => { setMobileOpen(false); onOpenLogin?.(); }}>Login</Button>
+                <Button size="sm" className="w-fit" onClick={() => { setMobileOpen(false); onOpenSignup?.(); }}>Get Started</Button>
+              </>
+            )}
           </div>
         </motion.div>
       )}
