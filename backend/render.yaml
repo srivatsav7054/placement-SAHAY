@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: placement-sahay-backend
+    runtime: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 18.0.0
+      - key: MONGO_URI
+        sync: false # Set this in Render Dashboard
+      - key: CLIENT_URL
+        value: "*" # Allow APK to connect
+      - key: PORT
+        value: 10000

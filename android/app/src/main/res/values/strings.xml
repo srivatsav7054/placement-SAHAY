@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Placement - SAHAY</string>
+    <string name="title_activity_main">Placement - SAHAY</string>
+    <string name="package_name">com.placement.sahay</string>
+    <string name="custom_url_scheme">com.placement.sahay</string>
+</resources>
