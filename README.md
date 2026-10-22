@@ -25,7 +25,7 @@ Placement SAHAY is a student-focused placement preparation platform designed to 
 - Encourage consistent, goal-oriented placement preparation.
 - Bring important placement-related activities into a unified platform.
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 The following technologies can be documented according to the actual project implementation.
 
