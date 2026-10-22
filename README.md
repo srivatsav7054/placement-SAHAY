@@ -3,7 +3,7 @@
 
 Placement SAHAY is a student-focused placement preparation platform designed to simplify the journey from resume building to job applications. It brings essential placement resources and tools together in one place, helping students prepare strategically, identify areas for improvement, and stay organized throughout the placement process.
 
-## ✨ Features
+## Features
 
 - **Resume Builder** — Create and refine professional resumes.
 - **AI-Powered Resume Analysis** — Analyze resumes, identify potential weaknesses, and receive actionable improvement suggestions.
